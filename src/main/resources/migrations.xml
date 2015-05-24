@@ -1,0 +1,186 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="add_resume_table" author="krichardson">
+        <createTable tableName="resume">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="unique_resume_name" />
+            </column>
+            <column name="objective" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add_experience_table" author="krichardson">
+        <createTable tableName="experience">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="resume_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="organization" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="to_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="summary" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="resume_id"
+                                 baseTableName="experience"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_experience_resume_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="resume"
+                                 referencedTableSchemaName="public"/>
+    </changeSet>
+
+    <changeSet id="add_education_table" author="krichardson">
+        <createTable tableName="education">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="resume_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="institution" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="degree" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="complete_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="summary" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="resume_id"
+                                 baseTableName="education"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_education_resume_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="resume"
+                                 referencedTableSchemaName="public"/>
+    </changeSet>
+
+    <changeSet id="add_skill_table" author="krichardson">
+        <createTable tableName="skill">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="resume_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="resume_id"
+                                 baseTableName="skill"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_skill_resume_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="resume"
+                                 referencedTableSchemaName="public"/>
+    </changeSet>
+
+    <changeSet id="populate_resume_data" author="krichardson">
+        <sql stripComments="true">
+            insert into resume (name, objective, last_updated) values ('Kris Richardson', 'I am a Software Engineer with 9 years experience developing web-based softwares. I am passionate about APIs, both as a consumer and provider, and strongly believe in composing applications out of RESTful microservices.
+
+            I am seeking a technical leadership opportunity in a fast-paced, evolving environment that allows me to apply my experience in improving team dynamics, software processes and quality.', now());
+
+
+            insert into experience (resume_id, title, organization, from_date, to_date, summary)
+            values (currval('resume_id_seq'), 'Internal Systems Developer', 'JobDig', '07/01/2006', '01/01/2008', 'Primary developer for JobDig’s CRM, order entry and distribution management systems. As a member of a small team, was responsible for all technical aspects from helpdesk support to managing in-house server infrastructure to architecting and writing web-based applications.
+            Skills and technologies used: Coldfusion, PHP, MS SQL Server, mySQL, HTML/CSS/JS');
+
+            insert into experience (resume_id, title, organization, from_date, to_date, summary)
+            values (currval('resume_id_seq'), 'Senior Software Engineer', 'Internet Broadcasting', '01/01/2008', '02/01/2013', 'Initially worked on a variety of tasks and projects within Internet Broadcasting’s “Toolshed” application suite. This included applications for task management, project management, order entry and reporting. Took on a lead developer role and was responsible for architecture and technology decisions. Key projects:
+            * Architecture and build of a rate card and pricing system into WebScan product, enabling a new business model for Internet Broadcasting.
+            * Architecture and build of new role &amp; permission based security model for WebScan product.
+            * API Integration with Google’s DFP product (Legacy &amp; Premium), helping IB’s ad trafficking services become more efficient and saving money by replacing a 3rd party vendor provided solution.
+            * API Integration with Solbright AdSuite (now Operative).
+            * Architecture and build of client-facing reporting application for IB’s Ad Solutions business. Used a plugin and template architecture to support generation of reports from various types of sources (database, flat file, web service). The system allowed non-technical users to schedule the automated processing and delivery of report data to customers.
+            * Migration of IB’s traditional Coldfusion applications to Railo, with a new build and deploy process involving Maven and Bamboo.
+            * API Integration of IB’s applications with Salesforce.com.
+            * UI Refresh based on bootstrap library
+            * SQL optimizations and reports upon request.
+            Skills and technologies used: Coldfusion (Adobe v7-9, Railo), Java, Groovy, Spring, Hibernate, HTML/CSS/JS, Mach-II MVC Framework, Coldspring IoC, MS SQL Server, Subversion');
+
+            insert into experience (resume_id, title, organization, from_date, to_date, summary)
+            values (currval('resume_id_seq'), 'Software Engineer / Team Lead', 'Bloom Health', '03/01/2013', '12/01/2014', 'Team lead in agile (scrum) development environment. In addition to software development, responsibilities included project planning, coordinating work and releases with other scrum teams within the company and ensuring code quality and consistency within the team. Work focused on the accounting components of Bloom’s software suite.
+            * Implemented ancillary (dental &amp; vision) support on Bloom’s enrollment platform, including new accounting methods and reporting capabilities.
+            * Updated Bloom’s accounting model to improve performance and provide a better audit trail.
+            * Continuously worked to migrate functionality from one monolithic grails application into several REST based micro-services
+            * Monitored application performance and optimized where necessary. Worked with production support team to proactively detect and fix application errors.
+            Skills and technologies used: Groovy, Grails, Spring, Spring Batch, Hibernate, Dropwizard, Spock, MySQL, Redis, RabbitMQ, Git/Github');
+
+            insert into experience (resume_id, title, organization, from_date, to_date, summary)
+            values (currval('resume_id_seq'), 'Integration Developer', 'RAZR Marketing', '12/01/2014', null, 'Worked on the RAZR''s Loyalty Rewards Redemption platform.
+            * Java, Groovy, Spring Framework
+            * API Integrations with product suppliers: Best Buy Open &amp; Comerce, Sears, Orbitz
+            * Introduced Spock testing framework and automated tests as part of CI build
+            * Worked to break out components of monolithic web application
+            * Implemented REST APIs that were consumed by RAZR''s front-end sites');
+
+            insert into education (resume_id, type, institution, location, degree, complete_date, summary)
+            values (currval('resume_id_seq'), 'COLLEGE', 'University of Minnesota', 'Twin Cities, MN', null, '05/01/2006', 'No degree obtained. Focused on Economics and Accounting before shifting to Computer Science for the final year and a half.');
+
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'Java', '5 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'Groovy', '5 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'Coldfusion', '4 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'PHP', '2 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'Clojure', 'Limited');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'HTML', '10 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'CSS', '10 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'Javascript', '5 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'Spring Framework', '5 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'Grails Framework', '3 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'Dropwizard Framework', '2 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'MS SQL Server 2005', '5 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'MySQL', '3 years');
+            insert into skill (resume_id, type, name, description) values (currval('resume_id_seq'), 'TECHNICAL', 'PostgreSQL', '2 years');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
