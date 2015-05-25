@@ -3,7 +3,7 @@
   "name": "Kris Richardson",
   "objective": "To be the best I can be.",
   "lastUpdated": "2015-05-24T20:22:29.817Z",
-  "educationList": [
+  "education": [
     {
       "id": 1,
       "type": "COLLEGE",
@@ -18,7 +18,7 @@
       "summary": "Learned some stuff"
     }
   ],
-  "experienceList": [
+  "experience": [
     {
       "id": 1,
       "title": "Internal Systems Developer",
@@ -52,7 +52,7 @@
       "summary": "Writing more code"
     }
   ],
-  "skillList": [
+  "skills": [
     {
       "id": 1,
       "type": "TECHNICAL",

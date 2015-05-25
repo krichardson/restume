@@ -18,7 +18,8 @@ apply plugin: 'docker'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group = group
-sourceCompatibility = 1.7
+version = version
+sourceCompatibility = 1.8
 mainClassName = mainClass
 
 repositories {
@@ -37,12 +38,10 @@ dependencies {
     //compile "${dropwizardGroup}:dropwizard-views:${dropwizardVersion}"
     //compile "${dropwizardGroup}:dropwizard-views-mustache:${dropwizardVersion}"
     //compile "${dropwizardGroup}:dropwizard-assets:${dropwizardVersion}"
-    //compile 'br.com.ingenieux.dropwizard:dropwizard-envvar:0.0.1'
 
     compile "io.federecio:dropwizard-swagger:0.7.0"
     compile "joda-time:joda-time:2.7"
 
-    //compile "com.h2database:h2:1.4.187"
     runtime "org.postgresql:postgresql:9.3-1101-jdbc4"
 
     testCompile "io.dropwizard:dropwizard-testing:${dropwizardVersion}"
@@ -67,13 +66,21 @@ shadowJar {
 }
 
 run {
-    args 'server', 'src/main/resources/config_local.yml'
+    args 'server', 'src/main/resources/config.yml'
 }
 
 runShadow {
-    args 'server', "src/main/resources/config_local.yml"
+    args 'server', "src/main/resources/config.yml"
 }
 
-distDocker {
-    exposePort 8080
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+task dockerBuildImage(type:Exec, dependsOn: ["clean", "shadowJar"]) {
+    commandLine './dockerBuildImage.sh'
+}
+
+task dockerRunImage(type:Exec, dependsOn: dockerBuildImage) {
+    commandLine './dockerRunImage.sh'
 }

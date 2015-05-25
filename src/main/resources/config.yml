@@ -31,17 +31,9 @@ server:
   applicationConnectors:
     - type: http
       port: 8080
-    #- type: https
-      #port: 8443
-      #keyStorePath:
-      #keyStorePassword:
   adminConnectors:
     - type: http
       port: 8081
-    #- type: https
-      #port: 8444
-      #keyStorePath:
-      #keyStorePassword:
 
 # Logging settings.
 logging:

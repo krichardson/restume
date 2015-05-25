@@ -2,7 +2,7 @@ package com.krisrichardson.restume.api
 
 class ResumeWithDetailDto extends ResumeDto {
 
-    List<EducationDto> educationList
-    List<ExperienceDto> experienceList
-    List<SkillDto> skillList
+    List<EducationDto> education
+    List<ExperienceDto> experience
+    List<SkillDto> skills
 }

@@ -25,9 +25,9 @@ class ResumeConverter implements DtoConverter<ResumeDto, Resume> {
                 name: from.name,
                 objective: from.objective,
                 lastUpdated: from.lastUpdated,
-                educationList: from.educationList.collect { educationConverter.convert(it) },
-                experienceList: from.experienceList.collect { experienceConverter.convert(it) },
-                skillList: from.skillList.collect { skillConverter.convert(it) }
+                education: from.education.collect { educationConverter.convert(it) },
+                experience: from.experience.collect { experienceConverter.convert(it) },
+                skills: from.skills.collect { skillConverter.convert(it) }
         )
     }
 

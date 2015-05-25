@@ -5,7 +5,7 @@ class Resume {
     String name
     String objective
     Date lastUpdated
-    List<Experience> experienceList
-    List<Education> educationList
-    List<Skill> skillList
+    List<Experience> experience
+    List<Education> education
+    List<Skill> skills
 }

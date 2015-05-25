@@ -34,9 +34,9 @@ class ResumeModule {
         Resume resume = resumeDAO.findById(id)
         if (full) {
             //Populate the components of the resume
-            resume.educationList = educationDAO.findByResumeId(id)
-            resume.experienceList = experienceDAO.findByResumeId(id)
-            resume.skillList = skillDAO.findByResumeId(id)
+            resume.education = educationDAO.findByResumeId(id)
+            resume.experience = experienceDAO.findByResumeId(id)
+            resume.skills = skillDAO.findByResumeId(id)
         }
         return resume
     }

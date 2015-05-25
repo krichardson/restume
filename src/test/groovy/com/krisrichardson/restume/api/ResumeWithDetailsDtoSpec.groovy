@@ -29,7 +29,7 @@ class ResumeWithDetailsDtoSpec extends Specification {
                 name: 'Kris Richardson',
                 objective: 'To be the best I can be.',
                 lastUpdated: new DateTime(2015, 5, 24, 15, 22, 29, 817).toDate(),
-                educationList: [
+                education: [
                         new EducationDto(
                                 id: 1,
                                 type: EducationType.COLLEGE,
@@ -40,7 +40,7 @@ class ResumeWithDetailsDtoSpec extends Specification {
                                 summary: 'Learned some stuff'
                         )
                 ],
-                experienceList: [
+                experience: [
                         new ExperienceDto(
                                 id: 1,
                                 title: 'Internal Systems Developer',
@@ -58,7 +58,7 @@ class ResumeWithDetailsDtoSpec extends Specification {
                                 summary: "Writing more code"
                         )
                 ],
-                skillList: [
+                skills: [
                         new SkillDto(
                                 id: 1,
                                 type: SkillType.TECHNICAL,
